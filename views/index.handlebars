@@ -2,3 +2,8 @@
   <input type="text" class="form-control col-4" name="fullURL" id="fullURL" placeholder="Input URL here" required>
   <button type="submit" class="btn btn-outline-primary mt-3 pr-5 pl-5">shorten</button>
 </form>
+{{#if isError}}
+<div class="alert alert-danger mt-3" role="alert">
+  <span class="m-2" style="color: brown;">很抱歉，您輸入的值不正確</span>
+</div>
+{{/if}}

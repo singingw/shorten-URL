@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const shortenURL = require("../../public/javascripts/shortenURL")
+const testurl = require("../../public/javascripts/testurl")
 const URL = require('../../models/url')
 
 router.get("/", (req, res) => {
@@ -10,7 +11,10 @@ router.get("/", (req, res) => {
 router.post("/", (req, res) => {
   const shortURL = shortenURL(5)
   const fullURL = req.body.fullURL
-  //if (!req.body.url) return res.redirect("/")
+  const longURL = req.body.fullURL.trim()
+  if (!longURL || !testurl(longURL)) {
+    return res.render('index', { isError: true })
+  }
   URL.findOne({ fullURL: fullURL })
     .then(data =>
       data ? data : URL.create({ fullURL: req.body.fullURL, shortURL })
