@@ -3,12 +3,3 @@
   <h2><a href={{fullURL}} target="_blank" id="copyText">http://localhost:3000/{{shortURL}}</a></h2>
 </div>
 <button class="btn btn-outline-primary mt-3 pr-5 pl-5" type="button" onclick="copyEvent()">Copy</button>
-
-<script>
-  function copyEvent() {
-    const URL = document.getElementById("copyText")
-    navigator.clipboard.writeText(URL.innerText)
-      .then(() => alert(`已複製連結！${URL.innerText}`))
-      .catch(error => console.log(error))
-  }
-</script>
