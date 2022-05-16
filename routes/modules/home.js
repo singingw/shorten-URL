@@ -20,17 +20,29 @@ router.post("/", (req, res) => {
       data ? data : URL.create({ fullURL: req.body.fullURL, shortURL })
     )
     .then(data => {
-      res.redirect(`/${data.shortURL}`)
+      res.redirect(`/shortURL/${data.shortURL}`)
     })
     .catch(error => console.error(error))
 
 })
 
-router.get("/:shortURL", (req, res) => {
+router.get("/shortURL/:shortURL", (req, res) => {
   const shortURL = req.params.shortURL
   URL.findOne({ shortURL: shortURL })
     .then(data => {
       res.render("shortener", { fullURL: data.fullURL, shortURL: data.shortURL })
+    })
+    .catch(error => console.error(error))
+})
+router.get("/:shortURL", (req, res) => {
+  const shortURL = req.params.shortURL
+  URL.findOne({ shortURL: shortURL })
+    .then(url => {
+      if (!url) {
+        res.render('notFound', { inputURL: shortURL })
+      } else {
+        res.redirect(url.fullURL)
+      }
     })
     .catch(error => console.error(error))
 })
