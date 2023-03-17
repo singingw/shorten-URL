@@ -30,7 +30,11 @@ router.get("/shortURL/:shortURL", (req, res) => {
   const shortURL = req.params.shortURL
   URL.findOne({ shortURL: shortURL })
     .then(data => {
-      res.render("shortener", { fullURL: data.fullURL, shortURL: data.shortURL })
+      if (!data) {
+        res.render('notFound', { inputURL: shortURL })
+      } else {
+        res.render("shortener", { fullURL: data.fullURL, shortURL: data.shortURL })
+      }
     })
     .catch(error => console.error(error))
 })
