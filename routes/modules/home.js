@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
-const shortenURL = require("../../public/javascripts/shortenURL")
-const testurl = require("../../public/javascripts/testurl")
+const shortenURL = require('../../public/javascripts/shortenURL')
+const testurl = require('../../public/javascripts/testurl')
 const URL = require('../../models/url')
 
 router.get("/", (req, res) => {
@@ -23,27 +23,29 @@ router.post("/", (req, res) => {
       res.redirect(`/shortURL/${data.shortURL}`)
     })
     .catch(error => console.error(error))
-
 })
 
 router.get("/shortURL/:shortURL", (req, res) => {
+  const hostname = req.get('host')
   const shortURL = req.params.shortURL
   URL.findOne({ shortURL: shortURL })
     .then(data => {
       if (!data) {
-        res.render('notFound', { inputURL: shortURL })
+        res.render('notFound', { inputURL: shortURL, hostname })
       } else {
-        res.render("shortener", { fullURL: data.fullURL, shortURL: data.shortURL })
+        res.render("shortener", { fullURL: data.fullURL, hostname, shortURL: data.shortURL })
       }
     })
     .catch(error => console.error(error))
 })
+
 router.get("/:shortURL", (req, res) => {
+  const hostname = req.get('host')
   const shortURL = req.params.shortURL
   URL.findOne({ shortURL: shortURL })
     .then(url => {
       if (!url) {
-        res.render('notFound', { inputURL: shortURL })
+        res.render('notFound', { inputURL: shortURL, hostname })
       } else {
         res.redirect(url.fullURL)
       }
